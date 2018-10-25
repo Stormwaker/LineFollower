@@ -11,8 +11,9 @@ from time import sleep
 
 terminate = False
 
-cs1 = ColorSensor('in3') #lewy
-cs2 = ColorSensor('in4') #prawy
+ts = TouchSensor('in2'
+cs1 = ColorSensor('in4') #lewy
+cs2 = ColorSensor('in1') #prawy
 leds = Leds()
 sound = Sound()
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_B)
@@ -35,9 +36,10 @@ zmiana_predkosci = 5
 predkosc_podstawowa = 15
 licznik_petli = 0
 
-while True:
+while not ts.is_pressed:
     licznik_petli += 1
-    print (licznik_petli)
+	print("1 = " + str(cs1.reflected_light_intensity) + "2 = " str(cs2.reflected_light_intenisty))
+	
     
     if (cs1.reflected_light_intensity < czarny):
         kierunek = lewo

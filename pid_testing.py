@@ -66,11 +66,12 @@ while not ts.is_pressed:
     lastError=error
     turn= Kp * error + Kd*derivative + Ki*integral
     minus = power - turn
+    plus = power + turn
+    print("minus = " + str(minus) + "plus = " + str(plus))
     if (minus < -max_speed):
         minus = -max_speed
     elif (minus > max_speed):
         minus = max_speed
-    plus = power + turn
     if (plus > max_speed):
         plus = max_speed
     elif (plus < -max_speed):

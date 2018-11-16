@@ -18,7 +18,7 @@ sound = Sound()
 
 # initializing variables
 maxSpeed = 10
-power = -12 
+power = -12
 
 # PID variables
 Kp = 1
@@ -41,12 +41,12 @@ sleep(2)
 
 # main loop
 while not ts.is_pressed:
-    
-	# reading RBG values from sensors
+
+    # reading RBG values from sensors
     r1, g1, b1 = cs1.rgb
     r2, g2, b2 = cs2.rgb
-	
-	# PID stuff
+
+    # PID stuff
     error = r1 - r2
     error *= 50
     error /= 200
@@ -64,8 +64,8 @@ while not ts.is_pressed:
         rightMotorSpeed = maxSpeed
     elif (rightMotorSpeed < -maxSpeed):
         rightMotorSpeed = -maxSpeed
-    
-	td.on_for_seconds(SpeedPercent(leftMotorSpeed),SpeedPercent(rightMotorSpeed), 1, False, False)
+
+        td.on_for_seconds(SpeedPercent(leftMotorSpeed),SpeedPercent(rightMotorSpeed), 1, False, False)
     sleep(0.01)
-	
+
 td.off()

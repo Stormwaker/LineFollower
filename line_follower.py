@@ -65,7 +65,7 @@ while not ts.is_pressed:
     elif (rightMotorSpeed < -maxSpeed):
         rightMotorSpeed = -maxSpeed
 
-        td.on_for_seconds(SpeedPercent(leftMotorSpeed),SpeedPercent(rightMotorSpeed), 1, False, False)
+    td.on_for_seconds(SpeedPercent(leftMotorSpeed),SpeedPercent(rightMotorSpeed), 1, False, False)
     sleep(0.01)
 
 td.off()

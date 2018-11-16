@@ -24,18 +24,18 @@ tank_drive = MoveTank(OUTPUT_A, OUTPUT_B)
 # left_motor = LargeMotor(OUTPUT_B); 
 # right_motor = LargeMotor(OUTPUT_A);
 # stale dla kolorow
-max_speed = 20
+max_speed = 10
 bialy = 19
 czarny = 7
-Kp=0.5
-Ki=0.3 #rozwaz zmniejszenie
-Kd=0.5
+Kp=1
+Ki=0.15 #rozwaz zmniejszenie
+Kd=1
 derivative=0
 integral = 0
 error1=0
 error2=0
 lastError=0
-power =-30 #rozwaz zmniejszenie
+power =-12 #rozwaz zmniejszenie
 error=0
 sound.speak('LETS GO!')
 
@@ -140,7 +140,7 @@ while not ts.is_pressed:
         mm.on_for_rotations(SpeedPercent(-20), 0.20)
         tank_drive.on_for_rotations(SpeedPercent(40),SpeedPercent(40), 1, True, True)
 
-    print(str(error) + " " + str(minus) + " " + str(plus) + " " + str(integral))
+    print(str(error) + " " + str(minus) + " " + str(plus))
     #else:
         #tank_drive.on_for_seconds(SpeedPercent(-10),SpeedPercent(-10), 1, False, False)
 

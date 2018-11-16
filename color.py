@@ -28,14 +28,14 @@ max_speed = 10
 bialy = 19
 czarny = 7
 Kp=1
-Ki=0.01
-Kd=0.5
+Ki=0.05
+Kd=1
 derivative=0
 integral = 0
 error1=0
 error2=0
 lastError=0
-power =-10
+power =-15
 error=0
 sound.speak('LETS GO!')
 

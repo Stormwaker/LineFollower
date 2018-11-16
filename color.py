@@ -4,7 +4,10 @@ from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent
 from ev3dev2.sensor.lego import TouchSensor
 from ev3dev2.sensor.lego import ColorSensor
 from ev3dev2.sensor.lego import InfraredSensor
+from ev3dev2.led import Leds
 from ev3dev2.sound import Sound
+import _thread
+import time
 from time import sleep
 
 terminate = False
@@ -14,24 +17,25 @@ cs2 = ColorSensor('in1') #prawy
 ps = InfraredSensor('in3')
 mm = MediumMotor(OUTPUT_C)
 
+leds = Leds()
 sound = Sound()
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_B)
 #steering_drive = MoveSteering(OUTPUT_A, OUTPUT_B)
 # left_motor = LargeMotor(OUTPUT_B); 
 # right_motor = LargeMotor(OUTPUT_A);
 # stale dla kolorow
-max_speed = 12
+max_speed = 10
 bialy = 19
 czarny = 7
-Kp=1.5
-Ki=0.1 #rozwaz zmniejszenie
-Kd=3
+Kp=1
+Ki=0.05 #rozwaz zmniejszenie
+Kd=1
 derivative=0
 integral = 0
 error1=0
 error2=0
 lastError=0
-power =-15 #rozwaz zmniejszenie
+power =-12 #rozwaz zmniejszenie
 error=0
 sound.speak('LETS GO!')
 
@@ -62,9 +66,9 @@ sleep(2)
 
 
 
-poZakrecie = True
+poZakrecie = False
 poCzerwonym = False
-podniesiony = True
+podniesiony = False
 powrot = False
 
 while not ts.is_pressed:
@@ -128,15 +132,6 @@ while not ts.is_pressed:
     if r1 < 50 and r2 < 50 and powrot:
         powrot = False
         tank_drive.on_for_rotations(SpeedPercent(-20),SpeedPercent(20), 0.6, True, True)
-    elif integral > 200:
-        print("W LEWO")
-        tank_drive.on_for_rotations(SpeedPercent(0),SpeedPercent(20), 0.8, True, True)
-        integral = 50
-    elif integral < -200:
-        print("W PRWO")
-        tank_drive.on_for_rotations(SpeedPercent(20),SpeedPercent(0), 0.8, True, True)
-        integral = -50
-
     else:
         tank_drive.on_for_seconds(SpeedPercent(minus),SpeedPercent(plus), 1, False, False)
 
@@ -145,10 +140,10 @@ while not ts.is_pressed:
         mm.on_for_rotations(SpeedPercent(-20), 0.20)
         tank_drive.on_for_rotations(SpeedPercent(40),SpeedPercent(40), 1, True, True)
 
+    print(str(error) + " " + str(minus) + " " + str(plus))
     #else:
         #tank_drive.on_for_seconds(SpeedPercent(-10),SpeedPercent(-10), 1, False, False)
 
-    print(str(error) + " " + str(minus) + " " + str(plus) + " " + str(integral))
     # for (motor, pow) in zip((left_motor, right_motor), sterowanie(turn, power)):
     # motor.duty_cycle_sp = pow
     sleep(0.01)

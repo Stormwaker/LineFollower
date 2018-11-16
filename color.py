@@ -28,14 +28,14 @@ max_speed = 10
 bialy = 19
 czarny = 7
 Kp=1
-Ki=0.05
+Ki=0.05 #rozwaz zmniejszenie
 Kd=1
 derivative=0
 integral = 0
 error1=0
 error2=0
 lastError=0
-power =-15
+power =-12 #rozwaz zmniejszenie
 error=0
 sound.speak('LETS GO!')
 
@@ -63,12 +63,13 @@ while not ts.is_pressed:
 print("Koniec kalibracji")
 
 sleep(2)
-#mm.on_for_rotations(SpeedPercent(-20), 0.2)
 
 
 
 poZakrecie = False
+poCzerwonym = False
 podniesiony = False
+powrot = False
 
 while not ts.is_pressed:
     #tank_drive_on(power,power)
@@ -82,16 +83,19 @@ while not ts.is_pressed:
         print("NIEBIESKI!")
         poZakrecie = True
         tank_drive.on_for_rotations(SpeedPercent(-20),SpeedPercent(20), 0.6, True, True)
+        tank_drive.on_for_rotations(SpeedPercent(-20),SpeedPercent(-20), 0.3, True, True)
 
-    if (b1 < 50 and r1 > 200):
+    if (b1 < 50 and r1 > 200 and not poCzerwonym): #and poZakrecie bezpieczniej
         print("CZERWONY!")
-        poZakrecie = True
+        poCzerwonym = True
         tank_drive.on_for_rotations(SpeedPercent(-20),SpeedPercent(20), 0.6, True, True)
+        tank_drive.on_for_rotations(SpeedPercent(-20),SpeedPercent(-20), 0.3, True, True)
 
-    if (poZakrecie and ps.proximity < 7  and not podniesiony):
+    if (poZakrecie and ps.proximity < 5  and not podniesiony):
         tank_drive.off()
         mm.on_for_rotations(SpeedPercent(20), 0.2)
         podniesiony = True
+        powrot = True
         tank_drive.on_for_rotations(SpeedPercent(20),SpeedPercent(20), 0.45, True, True)
         tank_drive.on_for_rotations(SpeedPercent(-20),SpeedPercent(20), 1.45, True, True)
 
@@ -125,8 +129,17 @@ while not ts.is_pressed:
     elif (plus < -max_speed):
         plus = -max_speed
     
-    #if abs(error) > 20:
-    tank_drive.on_for_seconds(SpeedPercent(minus),SpeedPercent(plus), 1, False, False)
+    if r1 < 50 and r2 < 50 and powrot:
+        powrot = False
+        tank_drive.on_for_rotations(SpeedPercent(-20),SpeedPercent(20), 0.6, True, True)
+    else:
+        tank_drive.on_for_seconds(SpeedPercent(minus),SpeedPercent(plus), 1, False, False)
+
+    if r1 > 190 and r2 > 190 and b1 < 50 and b2 < 50:
+        tank_drive.on_for_rotations(SpeedPercent(-20),SpeedPercent(-20), 0.2, True, True)
+        mm.on_for_rotations(SpeedPercent(-20), 0.20)
+        tank_drive.on_for_rotations(SpeedPercent(40),SpeedPercent(40), 1, True, True)
+
     print(str(error) + " " + str(minus) + " " + str(plus))
     #else:
         #tank_drive.on_for_seconds(SpeedPercent(-10),SpeedPercent(-10), 1, False, False)

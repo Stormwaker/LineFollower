@@ -1,4 +1,4 @@
-!/usr/bin/python3
+#!/usr/bin/python3
 
 from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MediumMotor
 from ev3dev2.sensor.lego import TouchSensor
@@ -54,10 +54,6 @@ while not ts.is_pressed:
 print("Calibration ended")
 sleep(2)
 
-shouldLower = raw_input("Should I lower the hook? y/n")
-
-if shouldLower == "y":
-    mm.on_for_rotations(SpeedPercent(20), 0.2)
 
 # main loop
 while not ts.is_pressed:

@@ -57,30 +57,30 @@ sleep(2)
 shouldLower = raw_input("Should I lower the hook? y/n")
 
 if shouldLower == "y":
-	mm.on_for_rotations(SpeedPercent(20), 0.2)
+    mm.on_for_rotations(SpeedPercent(20), 0.2)
 
 # main loop
 while not ts.is_pressed:
 
-	# reading RBG values from sensors
+    # reading RBG values from sensors
     r1, g1, b1 = cs1.rgb
     r2, g2, b2 = cs2.rgb
 
-	# BLUE TURN
+    # BLUE TURN
     if (b1 > 85 and b1 < 150 and r1 < 70 and r1 > 20 and not afterBlueTurn):
         print("NIEBIESKI!")
         afterBlueTurn = True
         td.on_for_rotations(SpeedPercent(-20),SpeedPercent(20), 0.6, True, True)
         td.on_for_rotations(SpeedPercent(-20),SpeedPercent(-20), 0.3, True, True)
 
-	# RED TURN
+    # RED TURN
     if (b1 < 50 and r1 > 200 and not afterRedTurn):
         print("CZERWONY!")
         afterRedTurn = True
         td.on_for_rotations(SpeedPercent(-20),SpeedPercent(20), 0.6, True, True)
         td.on_for_rotations(SpeedPercent(-20),SpeedPercent(-20), 0.3, True, True)
 
-	# GRABBING OBJECT
+    # GRABBING OBJECT
     if (afterBlueTurn and ps.proximity < 5  and not hookLifted):
         td.off()
         mm.on_for_rotations(SpeedPercent(20), 0.2)
@@ -89,14 +89,14 @@ while not ts.is_pressed:
         td.on_for_rotations(SpeedPercent(20),SpeedPercent(20), 0.45, True, True)
         td.on_for_rotations(SpeedPercent(-20),SpeedPercent(20), 1.45, True, True)
 
-	# RETURNING TO MAIN PATH
+    # RETURNING TO MAIN PATH
     if r1 < 50 and r2 < 50 and returning:
         returning = False
         td.on_for_rotations(SpeedPercent(-20),SpeedPercent(20), 0.6, True, True)
 
-	# DROPPING OBJECT
-	if r1 > 190 and r2 > 190 and b1 < 50 and b2 < 50:
-		td.on_for_rotations(SpeedPercent(-20),SpeedPercent(-20), 0.2, True, True)
+    # DROPPING OBJECT
+    if r1 > 190 and r2 > 190 and b1 < 50 and b2 < 50:
+        td.on_for_rotations(SpeedPercent(-20),SpeedPercent(-20), 0.2, True, True)
         mm.on_for_rotations(SpeedPercent(-20), 0.20)
         td.on_for_rotations(SpeedPercent(40),SpeedPercent(40), 1, True, True)
 
@@ -110,8 +110,8 @@ while not ts.is_pressed:
     leftMotorSpeed = capSpeed(power - turn)
     rightMotorSpeed = capSpeed(power + turn)
 
-	td.on_for_seconds(SpeedPercent(leftMotorSpeed),SpeedPercent(rightMotorSpeed), 1, False, False)
-	print(str(error) + " " + str(leftMotorSpeed) + " " + str(rightMotorSpeed) + " " + str(integral))
+    td.on_for_seconds(SpeedPercent(leftMotorSpeed),SpeedPercent(rightMotorSpeed), 1, False, False)
+    print(str(error) + " " + str(leftMotorSpeed) + " " + str(rightMotorSpeed) + " " + str(integral))
     #print(str(r1) + " " + str(g1) + " " + str(b1) + "  " + str(r2) + " " + str(g2) + " " + str(b2))
     sleep(0.01)
 

@@ -20,7 +20,14 @@ sound = Sound()
 
 # initializing variables
 maxSpeed = 10
-power = -12 
+power = -12
+
+def capSpeed(motorSpeed):
+    if (motorSpeed < -maxSpeed):
+        motorSpeed = -maxSpeed
+    elif (motorSpeed > maxSpeed):
+        motorSpeed = maxSpeed
+    return motorSpeed
 
 # PID variables
 Kp=1
@@ -54,13 +61,13 @@ if shouldLower == "y":
 
 # main loop
 while not ts.is_pressed:
-    
+
 	# reading RBG values from sensors
     r1, g1, b1 = cs1.rgb
     r2, g2, b2 = cs2.rgb
 
-	# BLUE TURN 
-    if (b1 > 85 and b1 < 150 and r1 < 70 and r1 > 20 and not afterBlueTurn): 
+	# BLUE TURN
+    if (b1 > 85 and b1 < 150 and r1 < 70 and r1 > 20 and not afterBlueTurn):
         print("NIEBIESKI!")
         afterBlueTurn = True
         td.on_for_rotations(SpeedPercent(-20),SpeedPercent(20), 0.6, True, True)
@@ -92,7 +99,7 @@ while not ts.is_pressed:
 		td.on_for_rotations(SpeedPercent(-20),SpeedPercent(-20), 0.2, True, True)
         mm.on_for_rotations(SpeedPercent(-20), 0.20)
         td.on_for_rotations(SpeedPercent(40),SpeedPercent(40), 1, True, True)
-        
+
     error = r1 - r2
     error *= 50
     error /= 200
@@ -100,20 +107,12 @@ while not ts.is_pressed:
     derivative = error - lastError
     lastError = error
     turn = Kp*error + Kd*derivative + Ki*integral
-    leftMotorSpeed = power - turn
-    rightMotorSpeed = power + turn
-    if (leftMotorSpeed < -maxSpeed):
-        leftMotorSpeed = -maxSpeed
-    elif (leftMotorSpeed > maxSpeed):
-        leftMotorSpeed = maxSpeed
-    if (rightMotorSpeed > maxSpeed):
-        rightMotorSpeed = maxSpeed
-    elif (rightMotorSpeed < -maxSpeed):
-        rightMotorSpeed = -maxSpeed
-    
+    leftMotorSpeed = capSpeed(power - turn)
+    rightMotorSpeed = capSpeed(power + turn)
+
 	td.on_for_seconds(SpeedPercent(leftMotorSpeed),SpeedPercent(rightMotorSpeed), 1, False, False)
 	print(str(error) + " " + str(leftMotorSpeed) + " " + str(rightMotorSpeed) + " " + str(integral))
     #print(str(r1) + " " + str(g1) + " " + str(b1) + "  " + str(r2) + " " + str(g2) + " " + str(b2))
     sleep(0.01)
-	
+
 td.off()

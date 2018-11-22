@@ -20,6 +20,13 @@ sound = Sound()
 maxSpeed = 10
 power = -12
 
+def capSpeed(motorSpeed):
+    if (motorSpeed < -maxSpeed):
+        motorSpeed = -maxSpeed
+    elif (motorSpeed > maxSpeed):
+        motorSpeed = maxSpeed
+    return motorSpeed
+
 # PID variables
 Kp = 1
 Ki = 0.15
@@ -54,17 +61,8 @@ while not ts.is_pressed:
     derivative = error - lastError
     lastError = error
     turn = Kp*error + Kd*derivative + Ki*integral
-    leftMotorSpeed = power - turn
-    rightMotorSpeed = power + turn
-    if (leftMotorSpeed < -maxSpeed):
-        leftMotorSpeed = -maxSpeed
-    elif (leftMotorSpeed > maxSpeed):
-        leftMotorSpeed = maxSpeed
-    if (rightMotorSpeed > maxSpeed):
-        rightMotorSpeed = maxSpeed
-    elif (rightMotorSpeed < -maxSpeed):
-        rightMotorSpeed = -maxSpeed
-
+    leftMotorSpeed = capSpeed(power - turn)
+    rightMotorSpeed = capSpeed(power + turn)
     td.on_for_seconds(SpeedPercent(leftMotorSpeed),SpeedPercent(rightMotorSpeed), 1, False, False)
     sleep(0.01)
 

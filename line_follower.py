@@ -1,9 +1,8 @@
 !/usr/bin/python3
 
-from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MediumMotor
+from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
 from ev3dev2.sensor.lego import TouchSensor
 from ev3dev2.sensor.lego import ColorSensor
-from ev3dev2.sensor.lego import InfraredSensor
 from ev3dev2.sound import Sound
 from time import sleep
 
